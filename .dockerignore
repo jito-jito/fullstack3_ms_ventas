@@ -1,0 +1,32 @@
+# Build stage files (ignorados para no ralentizar el paso de contexto al Docker daemon)
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!target/*.jar
+
+# Archivos propios del IDE (IDEs generan metadatos pesados o irrelevantes)
+.idea/
+.vscode/
+.settings/
+.classpath
+.project
+*.iml
+*.swp
+*~
+
+# Logs y archivos compilados locales
+logs/
+*.log
+*.class
+
+# Control de versiones
+.git/
+.gitignore
+
+# Archivos de la configuración de Docker (no hace falta enviarlos al daemon en sí)
+Dockerfile
+docker-compose.yml
+docker-compose.*.yml
+
+# Archivos temporales de sistema operativo
+.DS_Store
+Thumbs.db

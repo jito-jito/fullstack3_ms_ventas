@@ -1,0 +1,21 @@
+services:
+  ms-productos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ms-productos
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      # Si necesitas sobreescribir variables de entorno de base de datos, puedes hacerlo aquí:
+      # - SPRING_DATASOURCE_USERNAME=ADMIN
+      # - SPRING_DATASOURCE_PASSWORD=tutoken
+    restart: unless-stopped
+    networks:
+      - fullstack3-network
+
+networks:
+  fullstack3-network:
+    name: fullstack3-network
+    driver: bridge
