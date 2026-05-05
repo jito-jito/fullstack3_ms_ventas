@@ -1,4 +1,4 @@
-package com.productos.productos.exception;
+package com.ventas.ventas.exception;
 
 // ===============================
 // IMPORTACIONES
@@ -39,14 +39,14 @@ import java.util.stream.Collectors;
  * ===============================
  *
  * Permite manejar todas las excepciones de la aplicación
- * de forma centralizada para el microservicio de productos.
+ * de forma centralizada para el microservicio de ventas.
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
      * Maneja la excepción personalizada ResourceNotFoundException.
-     * Esta se lanza cuando no se encuentra un producto solicitado.
+     * Esta se lanza cuando no se encuentra una venta solicitada.
      *
      * @param ex excepción lanzada
      * @param request información de la solicitud HTTP

@@ -1,49 +1,92 @@
-# Microservicio de Gestión de Productos
+# Microservicio de Gestión de Ventas
 
 ## Descripción
-Microservicio para la gestión básica de productos con operaciones CRUD.
+Microservicio para la gestión de ventas de productos del ecommerce Shopiline.
+Permite registrar ventas, consultar el historial y obtener reportes de ventas totales por producto y del ecommerce completo.
 
 ## Características
-- ✅ Crear, obtener, actualizar y eliminar productos (soft delete)
+- ✅ Registrar ventas con múltiples productos
+- ✅ Consultar historial de ventas
+- ✅ Obtener ventas totales por producto
+- ✅ Obtener ventas totales del ecommerce
+- ✅ Eliminación lógica de ventas (soft delete)
 - ✅ Validaciones de datos
 - ✅ Manejo global de excepciones
 
 ## Configuración
-- **Puerto**: 8082
-- **Base URL**: `http://localhost:8082/api/productos`
+- **Puerto**: 8083
+- **Base URL**: `http://localhost:8083/api/ventas`
 - **Base de datos**: Oracle Cloud
 
 ## Endpoints Disponibles
 
-### Productos CRUD
-- `POST /api/productos` - Crear producto
-- `GET /api/productos` - Obtener todos los productos
-- `GET /api/productos/{id}` - Obtener producto por ID
-- `PUT /api/productos/{id}` - Actualizar producto
-- `DELETE /api/productos/{id}` - Eliminar producto (soft delete)
+### Ventas CRUD
+- `POST /api/ventas` - Registrar nueva venta
+- `GET /api/ventas` - Obtener todas las ventas
+- `GET /api/ventas/{id}` - Obtener venta por ID
+- `DELETE /api/ventas/{id}` - Eliminar venta (soft delete)
+
+### Reportes de Totales
+- `GET /api/ventas/total` - Obtener ventas totales del ecommerce
+- `GET /api/ventas/producto/{productoId}/total` - Obtener ventas totales de un producto
 
 
-## Modelo de Producto
+## Modelo de Venta
 ```json
 {
   "id": 1,
-  "nombre": "Laptop Gamer",
-  "descripcion": "Laptop para gaming de alta performance",
-  "precio": 129990,
-  "categoria": "Electrónicos",
-  "stock": 15,
+  "detalles": [
+    {
+      "id": 1,
+      "productoId": 5,
+      "productoNombre": "Laptop Gamer",
+      "cantidad": 2,
+      "precioUnitario": 129990,
+      "subtotal": 259980
+    },
+    {
+      "id": 2,
+      "productoId": 3,
+      "productoNombre": "Mouse Inalámbrico",
+      "cantidad": 1,
+      "precioUnitario": 15990,
+      "subtotal": 15990
+    }
+  ],
+  "total": 275970,
   "activo": true,
-  "fechaCreacion": "2026-03-23T10:30:00",
-  "fechaActualizacion": "2026-03-23T10:30:00"
+  "fechaVenta": "2026-05-04T21:30:00",
+  "fechaCreacion": "2026-05-04T21:30:00",
+  "fechaActualizacion": "2026-05-04T21:30:00"
+}
+```
+
+## Respuesta de Ventas Totales por Producto
+```json
+{
+  "productoId": 5,
+  "productoNombre": "Laptop Gamer",
+  "cantidadTotalVendida": 25,
+  "montoTotal": 3249750.00
+}
+```
+
+## Respuesta de Ventas Totales del Ecommerce
+```json
+{
+  "montoTotal": 15750000.00,
+  "cantidadVentas": 150,
+  "cantidadProductosVendidos": 520
 }
 ```
 
 ## Validaciones
-- Nombre: requerido, 2-100 caracteres
-- Precio: requerido, mayor a 0, máximo 10 dígitos enteros y 2 decimales
-- Categoría: requerida, máximo 50 caracteres
-- Stock: requerido, no negativo
-- Descripción: opcional, máximo 500 caracteres
+- Detalles: la venta debe tener al menos un detalle
+- Producto ID: requerido en cada detalle
+- Producto Nombre: requerido, máximo 100 caracteres
+- Cantidad: requerida, mínimo 1
+- Precio Unitario: requerido, mayor a 0, máximo 10 dígitos enteros y 2 decimales
+- Subtotal y Total: calculados automáticamente por el servicio
 
 ## Cómo ejecutar
 ```bash
@@ -59,43 +102,49 @@ Microservicio para la gestión básica de productos con operaciones CRUD.
 
 ## Ejemplos de uso
 
-### Crear producto
+### Registrar una venta
 ```bash
-curl -X POST http://localhost:8082/api/productos \
+curl -X POST http://localhost:8083/api/ventas \
   -H "Content-Type: application/json" \
   -d '{
-    "nombre": "iPhone 15",
-    "descripcion": "Smartphone Apple última generación", 
-    "precio": 999.99,
-    "categoria": "Electrónicos",
-    "stock": 50
+    "detalles": [
+      {
+        "productoId": 1,
+        "productoNombre": "iPhone 15",
+        "cantidad": 2,
+        "precioUnitario": 999.99
+      },
+      {
+        "productoId": 3,
+        "productoNombre": "Carcasa Protectora",
+        "cantidad": 2,
+        "precioUnitario": 29.99
+      }
+    ]
   }'
 ```
 
-### Obtener todos los productos
+### Obtener todas las ventas
 ```bash
-curl "http://localhost:8082/api/productos"
+curl "http://localhost:8083/api/ventas"
 ```
 
-### Obtener producto por ID
+### Obtener venta por ID
 ```bash
-curl "http://localhost:8082/api/productos/1"
+curl "http://localhost:8083/api/ventas/1"
 ```
 
-### Actualizar producto
+### Obtener ventas totales del ecommerce
 ```bash
-curl -X PUT http://localhost:8082/api/productos/1 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "nombre": "iPhone 15 Pro",
-    "descripcion": "Smartphone Apple última generación Pro", 
-    "precio": 1199.99,
-    "categoria": "Electrónicos",
-    "stock": 30
-  }'
+curl "http://localhost:8083/api/ventas/total"
 ```
 
-### Eliminar producto (soft delete)
+### Obtener ventas totales de un producto
 ```bash
-curl -X DELETE "http://localhost:8082/api/productos/1"
+curl "http://localhost:8083/api/ventas/producto/1/total"
+```
+
+### Eliminar venta (soft delete)
+```bash
+curl -X DELETE "http://localhost:8083/api/ventas/1"
 ```

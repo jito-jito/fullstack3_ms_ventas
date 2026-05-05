@@ -1,11 +1,11 @@
 services:
-  ms-productos:
+  ms-ventas:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ms-productos
+    container_name: ms-ventas
     ports:
-      - "8082:8082"
+      - "8083:8083"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       # Si necesitas sobreescribir variables de entorno de base de datos, puedes hacerlo aquí:

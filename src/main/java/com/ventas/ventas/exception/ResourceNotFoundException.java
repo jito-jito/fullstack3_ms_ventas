@@ -1,4 +1,4 @@
-package com.productos.productos.exception;
+package com.ventas.ventas.exception;
 
 /**
  * ===============================
@@ -6,13 +6,12 @@ package com.productos.productos.exception;
  * ===============================
  *
  * Excepción personalizada que se lanza cuando no se encuentra
- * un producto solicitado en la base de datos.
+ * una venta solicitada en la base de datos.
  *
  * Esta excepción se puede lanzar desde el servicio cuando:
- * - Se busca un producto por ID que no existe
- * - Se busca un producto por nombre que no existe
- * - Se intenta actualizar un producto que no existe
- * - Se intenta eliminar un producto que no existe
+ * - Se busca una venta por ID que no existe
+ * - Se intenta consultar totales de un producto sin ventas
+ * - Se intenta eliminar una venta que no existe
  */
 public class ResourceNotFoundException extends RuntimeException {
 
